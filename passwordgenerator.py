@@ -30,7 +30,7 @@ def decrypt(ch):
 #manual bruteforce
 
     if ch==1:
-        guess_str=input()
+        guess_str=pa.password("Enter a password guess:")
         cmp_result=convertToHash(guess_str)
         print("SHA1 hash of guess is:")
         print(cmp_result)
