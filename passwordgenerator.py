@@ -1,6 +1,6 @@
 from os import read, write
 from urllib.request import hashlib,urlopen
-
+fileurl="passlist.txt"
 result="null"
 ch=0
 #function to perform sha1 conversion
@@ -39,10 +39,10 @@ def decrypt(ch):
     if ch==2:
         try:
 #creates a file which contains the list of all the common passwords and appends the data
-            f=open("passlist.txt","x")
+            f=open(fileurl,"x")
             LIST_OF_COMMON_PASSWORDS = str(urlopen('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt').read(), 'utf-8')
             for guess in LIST_OF_COMMON_PASSWORDS.split('\n'):
-                f=open("passlist.txt","a")
+                f=open(fileurl,"a")
                 f.write(guess)
                 f.write("\n")
                 f.close()
@@ -51,7 +51,7 @@ def decrypt(ch):
             print("File already exists")
         print("Fetching data from password list...\n")
 #opening the password file and comparing the hashes
-        guess_pass=open("passlist.txt","r").read().split("\n")
+        guess_pass=open(fileurl,"r").read().split("\n")
         for guess in guess_pass:
             hashedGuess = hashlib.sha1(bytes(guess, 'utf-8')).hexdigest()
             if hashedGuess == result:
