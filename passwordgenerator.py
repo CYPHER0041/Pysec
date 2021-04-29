@@ -17,11 +17,10 @@ def convertToHash(word):
 
 #convert plaintext into sha1
 def encrypt():
-    print("\nPassword Encryption")
-    print("\nEnter the password to be encrypted:")
-    word=input()
+    word=pa.password("Enter the password to be converted:")
     global result
     result=convertToHash(word)
+    pa.alert( result,"SHA 1 encrypted password is","Continue")
     print("SHA1 encrypted password is :")
     print(result)
 
@@ -61,26 +60,20 @@ def decrypt(ch):
         for guess in guess_pass:
             hashedGuess = hashlib.sha1(bytes(guess, 'utf-8')).hexdigest()
             if hashedGuess == result:
-                print("The password is ", str(guess))
+                pa.alert(guess,"Password is","Done")
                 sys.exit("Completed")
 
             elif hashedGuess != result:
                 print("Password guess ",str(guess)," does not match, trying next...")
-    print("Password not in database, brute force failed")
+    pa.alert("Bruteforce failed... Password not in Database")
     sys.exit("Completed")
 
-print("Generate SHA1 encrypted password and save the encrypted data to a text file")
+print("Generate SHA1 encrypted password and save the cracked passwords to a txt file")
 encrypt()
-print("\nSelect option for cracking:")
-print("\n1.Manual")
-print("\n2.Common Credentials List")
-print("\n Enter your choice: ")
-ch=int(input())
-if ch==1:
+choice=pa.confirm("Select option for cracking","Cracking",buttons=['Manual','Pre-defined List'])
+if choice=='Manual':
     decrypt(1)
-if ch==2:
+if choice=='Pre-defined List':
     decrypt(2)
-else:
-    print("Invalid choice")
 
 
