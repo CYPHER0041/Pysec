@@ -1,1 +1,0 @@
-combasic UI(Key.left Key.rightv 0.2)Key.rightv
