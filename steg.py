@@ -22,3 +22,5 @@ def convertToSteg(fileurl):
       outmess= lsb.reveal(outIMGpng)
 
       print(F'Reveal Message : {outmess}')
+
+convertToSteg(fileurl)

@@ -19,7 +19,6 @@ def extractpassword(li):
             continue
         else:
             pwd.append(password)
-            continue
     return pwd
 
 para=open("log.txt","r").read()

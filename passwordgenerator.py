@@ -44,8 +44,8 @@ def decrypt(ch):
     if ch==2:
         try:
 #creates a file which contains the list of all the common passwords and appends the data
-            f=open(fileurl,"x")
-            LIST_OF_COMMON_PASSWORDS = str(urlopen('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt').read(), 'utf-8')
+            with open(fileurl,"x") as f:
+                LIST_OF_COMMON_PASSWORDS = str(urlopen('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt').read(), 'utf-8')
             for guess in LIST_OF_COMMON_PASSWORDS.split('\n'):
                 f=open(fileurl,"a")
                 f.write(guess)
