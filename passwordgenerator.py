@@ -89,5 +89,3 @@ if choice=='Manual':
     decrypt(1)
 if choice=='Pre-defined List':
     decrypt(2)
-
-

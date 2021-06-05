@@ -6,3 +6,4 @@ Security Demonstration with Python
 	> pip install requirements.txt
  2. Download the repository and extract into a single folder
  3. Run the passwordgenerator.py file
+ 4. After the last dialog, enter any keyphrase in the terminal along with the filename and the encryption password
