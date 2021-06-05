@@ -28,17 +28,14 @@ def extractpassword(li):
         #if satisfy call condtions then append to list
         else:
             pwd.append(password)
-            continue
     return pwd
-
-para=open("log.txt","r").read()
-li=convert(para)
-print(convert(para))
-print(extractpassword(li))
-pwds=extractpassword(li)
-#to write on text file
-with open("passlist.txt",'a') as f:
-    for item in pwds:
-        f.write(item)
-        f.write("\n")
-f.close()
+def savepassword():
+    print("Adding password to list")
+    para=open("log.txt","r").read()
+    li=convert(para)
+    pwds=extractpassword(li)
+    with open("passlist.txt",'a') as f:
+        for item in pwds:
+            f.write(item)
+            f.write("\n")
+        f.close()
