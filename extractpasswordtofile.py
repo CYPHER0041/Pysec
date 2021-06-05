@@ -21,13 +21,13 @@ def extractpassword(li):
             pwd.append(password)
     return pwd
 
-para=open("log.txt","r").read()
-li=convert(para)
-print(convert(para))
-print(extractpassword(li))
-pwds=extractpassword(li)
-with open("passlist.txt",'a') as f:
-    for item in pwds:
-        f.write(item)
-        f.write("\n")
-f.close()
+def savepassword():
+    print("Adding password to list")
+    para=open("log.txt","r").read()
+    li=convert(para)
+    pwds=extractpassword(li)
+    with open("passlist.txt",'a') as f:
+        for item in pwds:
+            f.write(item)
+            f.write("\n")
+        f.close()
